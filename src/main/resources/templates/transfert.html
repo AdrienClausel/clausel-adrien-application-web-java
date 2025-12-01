@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .center-frame {
+            border: 2px solid black;
+            padding: 2rem;
+            height: 688px;
+            width:500px;
+            background-color: white;
+        }
+        .title-box {
+            background-color: #F69F1D;
+            color: white;
+            height:64px;
+            width:214px;
+            padding: 1rem;
+            text-align: center;
+            margin:auto;
+            margin-top:2rem;
+            margin-bottom:6rem;
+            border-radius: 8px;
+        }
+        .form-control {
+            margin:auto;
+            margin-top: 2rem;
+            width:295px;
+            height:60px;
+        }
+        .signup-button{
+            width:205px;
+            height:64px;
+            margin:auto;
+            margin-top:8rem;
+            background-color:#207FEE;
+            color:white;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center">
+
+<div th:replace="fragments/header :: header('transfert')"></div>
+
+<div class="container mt-5">
+
+    <form class="d-flex gap-3 align-items-center" method="post" th:action="@{/transfert}"
+          th:object="${transactionTransfertDto}">
+
+        <select class="form-select w-auto" th:field="*{receiverId}">
+            <option value="">Sélectionner une relation</option>
+            <option th:each="u : ${relationUsers}"
+                    th:text="${u.name}"
+                    th:value="${u.id}">
+            </option>
+        </select>
+
+        <input
+                class="form-control w-auto"
+                placeholder="Description"
+                th:field="*{description}"
+                type="text"
+        />
+
+        <input
+                class="form-control w-auto"
+                placeholder="Montant"
+                step="0.01"
+                style="max-width: 150px;"
+                th:field="*{amount}"
+                type="number"
+        />
+
+        <button class="btn btn-primary" type="submit">Payer</button>
+
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
