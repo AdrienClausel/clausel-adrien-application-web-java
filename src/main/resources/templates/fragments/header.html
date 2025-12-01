@@ -1,0 +1,49 @@
+<header th:fragment="header(active)">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+
+            <!-- Titre -->
+            <a class="navbar-brand fw-bold" href="/">Pay My Buddy</a>
+
+            <!-- Burger mobile -->
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                    class="navbar-toggler"
+                    data-bs-target="#navbarNav" data-bs-toggle="collapse"
+                    type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Liens -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/"
+                           th:classappend="${active == 'transfert'} ? 'active'">Transférer</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/about"
+                           th:classappend="${active == 'profile'} ? 'active'">Profil</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/services"
+                           th:classappend="${active == 'addrelation'} ? 'active'">Ajouter relation</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/contact"
+                           th:classappend="${active == 'contact'} ? 'active'">Se déconnecter</a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>

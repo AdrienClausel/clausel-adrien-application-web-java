@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+        }
+        .center-frame {
+            border: 2px solid black;
+            padding: 2rem;
+            height: 688px;
+            width:500px;
+            background-color: white;
+        }
+        .title-box {
+            background-color: #F69F1D;
+            color: white;
+            height:64px;
+            width:214px;
+            padding: 1rem;
+            text-align: center;
+            margin:auto;
+            margin-top:2rem;
+            margin-bottom:6rem;
+            border-radius: 8px;
+        }
+        .form-control {
+            margin:auto;
+            margin-top: 2rem;
+            width:295px;
+            height:60px;
+        }
+        .signup-button{
+            width:205px;
+            height:64px;
+            margin:auto;
+            margin-top:8rem;
+            background-color:#207FEE;
+            color:white;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center">
+
+<div class="center-frame">
+    <div class="title-box">
+        <h4>Pay My Buddy</h4>
+    </div>
+
+    <form method="post" th:action="@{/signin}" th:object="${userSignInDto}">
+        <input
+                class="form-control"
+                name="email"
+                placeholder="Mail"
+                required
+                th:field="*{email}"
+                type="email"
+        />
+        <p
+                class="form-errors"
+                th:errors="*{email}"
+                th:if="${#fields.hasErrors('email')}"
+        ></p>
+
+        <input
+                class="form-control"
+                name="password"
+                placeholder="Mot de passe"
+                required
+                th:field="*{password}"
+                type="password"
+        />
+        <p
+                class="form-errors"
+                th:errors="*{password}"
+                th:if="${#fields.hasErrors('password')}"
+        ></p>
+
+        <button class="signup-button btn btn-primary d-block mx-auto" type="submit">Se connecter</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
