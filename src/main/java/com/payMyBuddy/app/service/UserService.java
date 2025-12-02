@@ -46,8 +46,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void addRelation(UserRelationDto userRelationDto) {
+    public void addRelation(UserRelationDto userRelationDto, User user) {
+        User newRelationUser = userRepository.findByEmailIgnoreCase(userRelationDto.email())
+                .orElseThrow(() -> new RuntimeException("Email non trouvé"));
 
+        if (user.getId().equals(newRelationUser.getId())) {
+            throw new RuntimeException("Impossible de se connecter à soi-même");
+        }
+
+        user.getConnections().add(newRelationUser);
+
+        userRepository.save(user);
     }
 
     @Override

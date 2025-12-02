@@ -78,9 +78,10 @@ public class UserController {
         return "signin";
     }
 
-    @PostMapping("/addRelation")
+    @PostMapping("/addrelation")
     public String addRelation(
             @Valid UserRelationDto userRelationDto,
+            @ModelAttribute("currentUser") User user,
             BindingResult result,
             Model model
     ) {
@@ -88,9 +89,20 @@ public class UserController {
             return "addRelation";
         }
 
-        userService.addRelation(userRelationDto);
-        model.addAttribute("successMessage", "Relation ajoutée");
+        try {
+            userService.addRelation(userRelationDto, user);
+            model.addAttribute("successMessage", "Relation ajoutée");
+        } catch (RuntimeException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
+
         return "addRelation";
+    }
+
+    @GetMapping("/addrelation")
+    public String addRelation(@ModelAttribute("currentUser") User user, Model model) {
+        model.addAttribute("userRelationDto", new UserRelationDto(""));
+        return "addrelation";
     }
 
     @PostMapping("/changePassword")
@@ -107,4 +119,6 @@ public class UserController {
         model.addAttribute("", "");
         return "profile";
     }
+
+
 }

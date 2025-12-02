@@ -13,9 +13,11 @@ public interface IUserService {
 
     Optional<User> signIn(UserSignInDto userSignInDto);
 
-    void addRelation(UserRelationDto userRelationDto);
+    void addRelation(UserRelationDto userRelationDto, User user);
 
     void changePassword(UserChangePasswordDto userChangePasswordDto);
 
     boolean emailExists(String email);
+
+
 }

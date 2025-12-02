@@ -4,13 +4,13 @@ import com.payMyBuddy.app.dto.TransactionTransfertDto;
 import com.payMyBuddy.app.model.User;
 import com.payMyBuddy.app.service.ITransactionService;
 import com.payMyBuddy.app.service.IUserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
@@ -40,8 +40,7 @@ public class TransactionController {
     }
 
     @GetMapping("/transfert")
-    public String transfert(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public String transfert(@ModelAttribute("currentUser") User user, Model model) {
         model.addAttribute("transactionTransfertDto", new TransactionTransfertDto(user.getId(), 0L, "", BigDecimal.valueOf(0.00)));
         model.addAttribute("relationUsers", user.getConnections());
         return "transfert";
