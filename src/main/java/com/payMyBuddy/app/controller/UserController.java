@@ -1,6 +1,6 @@
 package com.payMyBuddy.app.controller;
 
-import com.payMyBuddy.app.dto.UserChangePasswordDto;
+import com.payMyBuddy.app.dto.UserProfileDto;
 import com.payMyBuddy.app.dto.UserRelationDto;
 import com.payMyBuddy.app.dto.UserSignInDto;
 import com.payMyBuddy.app.dto.UserSignUpDto;
@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class UserController {
 
     @PostMapping("/signin")
     public String signIn(
-            @Valid @ModelAttribute("userSignInDto") UserSignInDto userSignInDto,
+            @Valid UserSignInDto userSignInDto,
             BindingResult result,
             Model model,
             HttpSession session
@@ -68,7 +69,7 @@ public class UserController {
             return "signin";
         }
 
-        session.setAttribute("user", user.get());
+        session.setAttribute("currentUser", user.get());
         return "redirect:/transfert";
     }
 
@@ -80,9 +81,9 @@ public class UserController {
 
     @PostMapping("/addrelation")
     public String addRelation(
-            @Valid UserRelationDto userRelationDto,
-            @ModelAttribute("currentUser") User user,
+            @Valid @ModelAttribute("userRelationDto") UserRelationDto userRelationDto,
             BindingResult result,
+            @SessionAttribute("currentUser") User user,
             Model model
     ) {
         if (result.hasErrors()) {
@@ -100,25 +101,37 @@ public class UserController {
     }
 
     @GetMapping("/addrelation")
-    public String addRelation(@ModelAttribute("currentUser") User user, Model model) {
+    public String addRelation(Model model) {
         model.addAttribute("userRelationDto", new UserRelationDto(""));
         return "addrelation";
     }
 
     @PostMapping("/changePassword")
     public String changePassword(
-            @Valid UserChangePasswordDto userChangePasswordDto,
+            @Valid @ModelAttribute("userProfileDto") UserProfileDto userProfileDto,
             BindingResult result,
+            @SessionAttribute("currentUser") User user,
             Model model
     ) {
         if (result.hasErrors()) {
             return "profile";
         }
 
-        userService.changePassword(userChangePasswordDto);
-        model.addAttribute("", "");
+        userService.changePassword(userProfileDto, user);
+        model.addAttribute("successMessage", "Mot de passe modifié");
         return "profile";
     }
 
+    @GetMapping("/profile")
+    public String profile(@SessionAttribute("currentUser") User user, Model model) {
+        model.addAttribute("userProfileDto", new UserProfileDto(user.getUsername(), user.getEmail(), user.getPassword()));
+        return "profile";
+    }
+
+    @GetMapping("/signout")
+    public String signout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/signin";
+    }
 
 }

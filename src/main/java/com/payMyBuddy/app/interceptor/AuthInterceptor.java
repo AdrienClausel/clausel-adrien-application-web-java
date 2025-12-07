@@ -17,7 +17,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                              Object handler) throws IOException {
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("currentUser") == null) {
             response.sendRedirect("/signin");
             return false;
         }

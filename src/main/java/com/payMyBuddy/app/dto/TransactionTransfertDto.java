@@ -1,11 +1,13 @@
 package com.payMyBuddy.app.dto;
 
-import java.math.BigDecimal;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record TransactionTransfertDto(
-        Long senderId,
+        @NotNull(message = "Vous devez choisir une relation")
         Long receiverId,
+        @NotBlank(message = "La description est obligatoire")
         String description,
-        BigDecimal amount
+        String amount
 ) {
 }
