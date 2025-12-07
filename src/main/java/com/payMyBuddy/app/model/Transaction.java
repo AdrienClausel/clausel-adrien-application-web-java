@@ -2,9 +2,8 @@ package com.payMyBuddy.app.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -18,11 +17,12 @@ public class Transaction {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    @NotNull(message = "L'émetteur  est obligatoire")
     private User sender;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
-    @NotBlank(message = "Le destinataire est obligatoire")
+    @NotNull(message = "Le destinataire est obligatoire")
     private User receiver;
 
     @Column(name = "description")
@@ -30,6 +30,10 @@ public class Transaction {
     private String description;
 
     @Column(name = "amount")
-    @NotBlank(message = "Le montant est obligatoire")
-    private BigDecimal amount;
+    @NotNull(message = "Le montant est obligatoire")
+    private int amount;
+
+    public String getFormatedAmount() {
+        return String.format("%d €", amount);
+    }
 }

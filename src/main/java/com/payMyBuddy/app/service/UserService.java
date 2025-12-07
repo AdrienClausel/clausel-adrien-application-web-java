@@ -1,6 +1,6 @@
 package com.payMyBuddy.app.service;
 
-import com.payMyBuddy.app.dto.UserChangePasswordDto;
+import com.payMyBuddy.app.dto.UserProfileDto;
 import com.payMyBuddy.app.dto.UserRelationDto;
 import com.payMyBuddy.app.dto.UserSignInDto;
 import com.payMyBuddy.app.dto.UserSignUpDto;
@@ -60,8 +60,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void changePassword(UserChangePasswordDto userChangePasswordDto) {
-
+    public void changePassword(UserProfileDto userProfileDto, User user) {
+        user.setPassword(passwordService.Encode(userProfileDto.password()));
+        userRepository.save(user);
     }
 
     @Override

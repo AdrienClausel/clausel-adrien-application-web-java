@@ -1,6 +1,6 @@
 package com.payMyBuddy.app.service;
 
-import com.payMyBuddy.app.dto.UserChangePasswordDto;
+import com.payMyBuddy.app.dto.UserProfileDto;
 import com.payMyBuddy.app.dto.UserRelationDto;
 import com.payMyBuddy.app.dto.UserSignInDto;
 import com.payMyBuddy.app.dto.UserSignUpDto;
@@ -15,7 +15,7 @@ public interface IUserService {
 
     void addRelation(UserRelationDto userRelationDto, User user);
 
-    void changePassword(UserChangePasswordDto userChangePasswordDto);
+    void changePassword(UserProfileDto userProfileDto, User user);
 
     boolean emailExists(String email);
 
