@@ -137,6 +137,7 @@
         </div>
     </form>
 
+    <div class="mt-3 alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
     <div class="mt-3 alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
     <div class="container mt-4">

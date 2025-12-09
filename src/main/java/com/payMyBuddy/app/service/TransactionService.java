@@ -1,6 +1,7 @@
 package com.payMyBuddy.app.service;
 
 import com.payMyBuddy.app.dto.TransactionTransfertDto;
+import com.payMyBuddy.app.exception.MyException;
 import com.payMyBuddy.app.model.Transaction;
 import com.payMyBuddy.app.model.User;
 import com.payMyBuddy.app.repository.ITransactionRepository;
@@ -27,12 +28,12 @@ public class TransactionService implements ITransactionService {
     public void createPayment(TransactionTransfertDto transactionCreatePaymentDto) {
         var currentUser = (User) session.getAttribute("currentUser");
 
-        var newTransaction = new Transaction();
         var sender = userRepository.findById(currentUser.getId())
-                .orElseThrow(() -> new RuntimeException("L'utilisateur "));
-        ;
+                .orElseThrow(() -> new MyException("L'utilisateur n'a pas été trouvé"));
         var receiver = userRepository.findById(transactionCreatePaymentDto.receiverId())
-                .orElseThrow(() -> new RuntimeException("Le destinataire n'a pas été trouvé "));
+                .orElseThrow(() -> new MyException("Le destinataire n'a pas été trouvé "));
+
+        var newTransaction = new Transaction();
         newTransaction.setSender(sender);
         newTransaction.setReceiver(receiver);
         newTransaction.setDescription(transactionCreatePaymentDto.description());
