@@ -102,7 +102,7 @@ public class UserController {
 
         if (result.hasErrors()) {
             log.debug("Validation errors {} for user {}", result.getAllErrors(), user.getId());
-            return "addRelation";
+            return "addrelation";
         }
 
         try {
@@ -114,7 +114,7 @@ public class UserController {
             result.rejectValue("email", "errorEmail", ex.getMessage());
         }
 
-        return "addRelation";
+        return "addrelation";
     }
 
     @GetMapping("/addrelation")

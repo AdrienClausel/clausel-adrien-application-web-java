@@ -4,6 +4,7 @@ import com.payMyBuddy.app.dto.UserProfileDto;
 import com.payMyBuddy.app.dto.UserRelationDto;
 import com.payMyBuddy.app.dto.UserSignInDto;
 import com.payMyBuddy.app.dto.UserSignUpDto;
+import com.payMyBuddy.app.exception.MyException;
 import com.payMyBuddy.app.model.User;
 import com.payMyBuddy.app.repository.IUserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -59,20 +60,23 @@ public class UserService implements IUserService {
     public void addRelation(UserRelationDto userRelationDto, User user) {
         log.info("adding relation {} to email:{}", userRelationDto.email(), user.getEmail());
         User newRelationUser = userRepository.findByEmailIgnoreCase(userRelationDto.email())
-                .orElseThrow(() -> new RuntimeException("Email non trouvé"));
+                .orElseThrow(() -> new MyException("Email non trouvé"));
 
         if (user.getId().equals(newRelationUser.getId())) {
-            throw new RuntimeException("Impossible de se connecter à soi-même");
+            throw new MyException("Impossible de se connecter à soi-même");
         }
 
         user.getConnections().add(newRelationUser);
         userRepository.save(user);
+        log.info("relation {} added for user:{}", userRelationDto.email(), user.getId());
     }
 
     @Override
     public void changePassword(UserProfileDto userProfileDto, User user) {
+        log.info("changing password for user:{}", user.getId());
         user.setPassword(passwordService.Encode(userProfileDto.password()));
         userRepository.save(user);
+        log.info("password changed for user:{}", user.getId());
     }
 
     @Override
