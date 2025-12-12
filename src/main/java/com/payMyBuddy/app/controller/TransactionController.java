@@ -49,7 +49,7 @@ public class TransactionController {
         }
 
         try {
-            transactionService.createPayment(transactionTransfertDto);
+            transactionService.createPayment(transactionTransfertDto, user);
             log.info("Transfert successful for user {}", user.getId());
         } catch (MyException ex) {
             log.error("Transfert errors:{} for user:{}", ex.getMessage(), user.getId(), ex);

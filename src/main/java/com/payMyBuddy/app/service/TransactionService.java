@@ -6,7 +6,6 @@ import com.payMyBuddy.app.model.Transaction;
 import com.payMyBuddy.app.model.User;
 import com.payMyBuddy.app.repository.ITransactionRepository;
 import com.payMyBuddy.app.repository.IUserRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +19,9 @@ public class TransactionService implements ITransactionService {
 
     @Autowired
     private IUserRepository userRepository;
-
-    @Autowired
-    private HttpSession session;
-
+    
     @Override
-    public void createPayment(TransactionTransfertDto transactionCreatePaymentDto) {
-        var currentUser = (User) session.getAttribute("currentUser");
-
+    public void createPayment(TransactionTransfertDto transactionCreatePaymentDto, User currentUser) {
         var sender = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new MyException("L'utilisateur n'a pas été trouvé"));
         var receiver = userRepository.findById(transactionCreatePaymentDto.receiverId())
