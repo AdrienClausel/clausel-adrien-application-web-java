@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -151,6 +152,7 @@ public class UserServiceTest {
     void changePassword_shouldEncodeAndSave() {
         UserProfileDto dto = new UserProfileDto("adrien", "adrien@test.fr", "newPassword");
 
+        when(userRepository.findById(any())).thenReturn(Optional.of(mockUser));
         when(passwordService.Encode("newPassword")).thenReturn("encodedNewPassword");
 
         userService.changePassword(dto, mockUser);

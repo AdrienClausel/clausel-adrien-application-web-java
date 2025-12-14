@@ -24,6 +24,11 @@ public class UserService implements IUserService {
     @Autowired
     private IPasswordService passwordService;
 
+    /**
+     * Inscription d'un utilisateur
+     *
+     * @param userSignUpDto données de l'utilisateur
+     */
     @Override
     public void signUp(UserSignUpDto userSignUpDto) {
         log.info("Creating new user for email:{}", userSignUpDto.email());
@@ -38,6 +43,12 @@ public class UserService implements IUserService {
         log.info("User created successfully, id:{}, for email:{}", user.getId(), user.getEmail());
     }
 
+    /**
+     * Connecte un utilisateur
+     *
+     * @param userSignInDto données de l'utilisateur
+     * @return utilisateur connecté
+     */
     @Override
     public Optional<User> signIn(UserSignInDto userSignInDto) {
         log.info("Signing user for email:{}", userSignInDto.email());
@@ -56,6 +67,12 @@ public class UserService implements IUserService {
         }
     }
 
+    /**
+     * Ajoute une relation à un utilisateur
+     *
+     * @param userRelationDto données de la relation
+     * @param user            utilisateur
+     */
     @Override
     public void addRelation(UserRelationDto userRelationDto, User user) {
         log.info("adding relation {} to email:{}", userRelationDto.email(), user.getEmail());
@@ -66,19 +83,37 @@ public class UserService implements IUserService {
             throw new MyException("Impossible de se connecter à soi-même");
         }
 
+        if (user.getConnections().stream().anyMatch(u -> u.getEmail().equals(newRelationUser.getEmail()))) {
+            throw new MyException("Cette relation existe déjà");
+        }
+
         user.getConnections().add(newRelationUser);
         userRepository.save(user);
         log.info("relation {} added for user:{}", userRelationDto.email(), user.getId());
     }
 
+    /**
+     * Permet de changer le mot de passe d'un utilisateur
+     *
+     * @param userProfileDto données de l'utilisateur dont le mot de passe à changer
+     * @param userSession    utilisateur connecté
+     */
     @Override
-    public void changePassword(UserProfileDto userProfileDto, User user) {
-        log.info("changing password for user:{}", user.getId());
+    public void changePassword(UserProfileDto userProfileDto, User userSession) {
+        log.info("changing password for user:{}", userSession.getId());
+        User user = userRepository.findById(userSession.getId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         user.setPassword(passwordService.Encode(userProfileDto.password()));
         userRepository.save(user);
         log.info("password changed for user:{}", user.getId());
     }
 
+    /**
+     * Vérifie si un email existe
+     *
+     * @param email email à vérifier
+     * @return vrai s'il existe sinon false
+     */
     @Override
     public boolean emailExists(String email) {
         return userRepository.existsByEmail(email);

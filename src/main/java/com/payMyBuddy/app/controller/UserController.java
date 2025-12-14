@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.Optional;
 
+/**
+ * Contrôleur gérant les actions liés à l'utilisateur
+ */
 @Slf4j
 @Controller
 public class UserController {
@@ -27,6 +30,14 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    /**
+     * Enregistrement d'un utilisateur
+     *
+     * @param userSignUpDto données d'enregistrement d'un utilisateur
+     * @param result        résultat de la validation
+     * @param model         données transmises à la vue
+     * @return vue signup ou signin
+     */
     @PostMapping("/signup")
     public String signUp(
             @Valid @ModelAttribute("userSignUpDto") UserSignUpDto userSignUpDto,
@@ -50,6 +61,12 @@ public class UserController {
         return "redirect:/signin";
     }
 
+    /**
+     * Récupère la vue d'enregistrement d'un utilisateur
+     *
+     * @param model données d'un utilisateur
+     * @return vue signup
+     */
     @GetMapping("/signup")
     public String signUp(Model model) {
         log.debug("GET /signup ");
@@ -57,6 +74,15 @@ public class UserController {
         return "signup";
     }
 
+    /**
+     * Connexion d'un utilisateur
+     *
+     * @param userSignInDto données de connexion
+     * @param result        résultat de la validation
+     * @param model         données transmises à la vue
+     * @param session       données de session
+     * @return vue signin ou transfert
+     */
     @PostMapping("/signin")
     public String signIn(
             @Valid UserSignInDto userSignInDto,
@@ -84,6 +110,12 @@ public class UserController {
         return "redirect:/transfert";
     }
 
+    /**
+     * Récupère la vue de connexion
+     *
+     * @param model données transmises à la vue
+     * @return vue signin
+     */
     @GetMapping("/signin")
     public String signIn(Model model) {
         log.debug("GET /signin");
@@ -91,6 +123,15 @@ public class UserController {
         return "signin";
     }
 
+    /**
+     * Ajout d'une relation
+     *
+     * @param userRelationDto données de la relation
+     * @param result          résultat de la validation
+     * @param user            utilisateur connecté
+     * @param model           données transmises à la vue
+     * @return vue addrelation
+     */
     @PostMapping("/addrelation")
     public String addRelation(
             @Valid @ModelAttribute("userRelationDto") UserRelationDto userRelationDto,
@@ -117,6 +158,12 @@ public class UserController {
         return "addrelation";
     }
 
+    /**
+     * Récupère la vue pour ajouter une relation
+     *
+     * @param model données transmises à la vue
+     * @return vue addrelation
+     */
     @GetMapping("/addrelation")
     public String addRelation(Model model) {
         log.debug("GET /addrelation");
@@ -124,6 +171,15 @@ public class UserController {
         return "addrelation";
     }
 
+    /**
+     * Changement d'un mot de passe
+     *
+     * @param userProfileDto données du profil
+     * @param result         résultat de la validation
+     * @param user           utilisateur connecté
+     * @param model          données transmises à la vue
+     * @return vue profile
+     */
     @PostMapping("/changePassword")
     public String changePassword(
             @Valid @ModelAttribute("userProfileDto") UserProfileDto userProfileDto,
@@ -144,6 +200,13 @@ public class UserController {
         return "profile";
     }
 
+    /**
+     * Récupère la vue du profil
+     *
+     * @param user  utilisateur connecté
+     * @param model données transmises à la vue
+     * @return vue profile
+     */
     @GetMapping("/profile")
     public String profile(@SessionAttribute("currentUser") User user, Model model) {
         log.debug("GET /profile for user:{}", user.getId());
@@ -151,6 +214,13 @@ public class UserController {
         return "profile";
     }
 
+    /**
+     * Récupère la vue de déconnexion
+     *
+     * @param user    utilisateur connecté
+     * @param session session en cours
+     * @return vue signin
+     */
     @GetMapping("/signout")
     public String signout(@SessionAttribute("currentUser") User user, HttpSession session) {
         log.debug("GET /signout for user:{}", user.getId());

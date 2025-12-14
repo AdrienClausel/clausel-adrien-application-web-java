@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,9 +39,11 @@ public class TransactionServiceTest {
     void createPayment_shouldSaveTransaction_whenUsersExist() {
         User sender = new User();
         sender.setId(1L);
+        sender.setBalance(BigDecimal.valueOf(1000));
 
         User receiver = new User();
         receiver.setId(2L);
+        receiver.setBalance(BigDecimal.valueOf(1000));
 
         TransactionTransfertDto dto = new TransactionTransfertDto(2L, "Restaurant", "100€");
 

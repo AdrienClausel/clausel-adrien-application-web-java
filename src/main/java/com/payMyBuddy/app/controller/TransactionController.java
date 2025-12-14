@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.Objects;
 
+/**
+ * Contrôleur gérant les opérations de transfert d'argent
+ */
 @Slf4j
 @Controller
 public class TransactionController {
@@ -28,6 +31,15 @@ public class TransactionController {
     @Autowired
     private IUserService userService;
 
+    /**
+     * Valide d'une opération de transfert
+     *
+     * @param transactionTransfertDto données de transfert
+     * @param result                  resultat de la validation
+     * @param user                    utilisateur connecté
+     * @param model                   données transmises à la vue
+     * @return vue retournée
+     */
     @PostMapping("/transfert")
     public String transfert(
             @Valid @ModelAttribute("transactionTransfertDto") TransactionTransfertDto transactionTransfertDto,
@@ -54,15 +66,25 @@ public class TransactionController {
         } catch (MyException ex) {
             log.error("Transfert errors:{} for user:{}", ex.getMessage(), user.getId(), ex);
             model.addAttribute("errorMessage", ex.getMessage());
+            loadTransfertModel(model, user);
+            return "transfert";
         } catch (RuntimeException ex) {
             log.error("Transfert errors:{} for user:{}", ex.getMessage(), user.getId(), ex);
             model.addAttribute("errorMessage", "Le transfert n'a pas pu aboutir");
+            loadTransfertModel(model, user);
+            return "transfert";
         }
-
-        loadTransfertModel(model, user);
-        return "transfert";
+        
+        return "redirect:/transfert";
     }
 
+    /**
+     * Récupère la vue de transfert
+     *
+     * @param user  utilisateur connecté
+     * @param model données transmises à la vue
+     * @return vue retournée
+     */
     @GetMapping("/transfert")
     public String transfert(@SessionAttribute("currentUser") User user, Model model) {
         log.debug("GET /transfert user:{}", user.getId());

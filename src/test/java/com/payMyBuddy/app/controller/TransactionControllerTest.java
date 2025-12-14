@@ -73,9 +73,7 @@ public class TransactionControllerTest {
                         .param("description", dto.description())
                         .param("amount", dto.amount())
                         .sessionAttr("currentUser", mockUser))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("transactions"))
-                .andExpect(view().name("transfert"));
+                .andExpect(status().is3xxRedirection());
 
         verify(transactionService, times(1)).createPayment(any(), any());
     }

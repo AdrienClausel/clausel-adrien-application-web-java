@@ -18,7 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/signup",
-                        "/signin"
+                        "/signin",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/**/*.png",
+                        "/**/*.jpg",
+                        "/**/*.svg",
+                        "/**/*.woff2",
+                        "/**/*.ttf"
                 );
     }
 }
