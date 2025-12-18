@@ -1,0 +1,23 @@
+package com.payMyBuddy.app.service;
+
+import com.payMyBuddy.app.dto.UserProfileDto;
+import com.payMyBuddy.app.dto.UserRelationDto;
+import com.payMyBuddy.app.dto.UserSignInDto;
+import com.payMyBuddy.app.dto.UserSignUpDto;
+import com.payMyBuddy.app.model.User;
+
+import java.util.Optional;
+
+public interface IUserService {
+    void signUp(UserSignUpDto userSignUpDto);
+
+    Optional<User> signIn(UserSignInDto userSignInDto);
+
+    void addRelation(UserRelationDto userRelationDto, User user);
+
+    void changePassword(UserProfileDto userProfileDto, User user);
+
+    boolean emailExists(String email);
+
+
+}
